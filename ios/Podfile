@@ -1,0 +1,57 @@
+# Uncomment the next line to define a global platform for your project
+  platform :ios, '9.0'
+
+target 'Stack' do
+
+  # Pods for Stack
+  pod 'Firebase/AdMob'
+  pod 'Firebase/Auth'
+  pod 'Firebase/Crash'
+  pod 'Firebase/DynamicLinks'
+  pod 'Firebase/Performance'
+  pod 'Firebase/Firestore'
+  pod 'Firebase/RemoteConfig'
+  pod 'Firebase/Storage'
+  pod 'Firebase/Core', '~> 4.13.0'
+  pod 'Firebase/Database'
+  pod 'Firebase/Messaging'
+  pod 'FirebaseInstanceID'
+  pod 'Fabric', '~> 1.7.3'
+  pod 'Crashlytics', '~> 3.10.0'
+
+  pod 'React', :path => '../node_modules/react-native', :subspecs => [
+    'ART',
+    'Core',
+    'DevSupport',
+    'RCTActionSheet',
+    'RCTAnimation',
+    'RCTImage',
+    'RCTLinkingIOS',
+    'RCTNetwork',
+    'RCTSettings',
+    'RCTText',
+    'RCTVibration',
+    'RCTWebSocket'
+  ]
+
+  pod 'yoga', :path => '../node_modules/react-native/ReactCommon/yoga'
+
+  pod 'react-native-config', :path => '../node_modules/react-native-config'
+
+end
+
+post_install do |installer|
+  installer.pods_project.targets.each do |target|
+    if target.name == 'react-native-config'
+      phase = target.project.new(Xcodeproj::Project::Object::PBXShellScriptBuildPhase)
+      phase.shell_script = "cd ../../"\
+                           " && RNC_ROOT=./node_modules/react-native-config/"\
+                           " && export SYMROOT=$RNC_ROOT/ios/ReactNativeConfig"\
+                           " && export BUILD_DIR=$RNC_ROOT/ios/ReactNativeConfig"\
+                           " && ruby $RNC_ROOT/ios/ReactNativeConfig/BuildDotenvConfig.ruby"
+
+      target.build_phases << phase
+      target.build_phases.move(phase,0)
+    end
+  end
+end

@@ -1,0 +1,9 @@
+{
+  "projects": {
+    "default": "stack-dev-b9aa5",
+    "staging": "stack-staging",
+    "dev": "stack-dev-b9aa5",
+    "prod": "stack-prod",
+    "old": "stack-fd4e6"
+  }
+}
